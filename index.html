@@ -25,12 +25,16 @@
   <script>
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
+    // Start ball at random locations on canvas
+    // To get a random floating point number within a certain range, first define the range by 'min' and 'max':
+    // min + (Math.random() * (max - min))
+    // See https://answers.yahoo.com/question/index?qid=20101101170531AA5KTeQ
     var x = Math.floor(Math.random() * canvas.width);
     var y = Math.floor(Math.random() * canvas.height);
-    console.log(x);
-    console.log(y);
-    var dx = 1;
-    var dy = -1;
+    // Set random initial direction
+    // See http://stackoverflow.com/questions/8611830/javascript-random-positive-or-negative-number
+    var dx = Math.round(Math.random()) * 2 - 1;
+    var dy = Math.round(Math.random()) * 2 - 1;
     var ballRadius = 10;
     var paddleHeight = 10;
     var paddleWidth = 75;
