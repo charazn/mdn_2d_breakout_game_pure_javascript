@@ -57,6 +57,8 @@
     var brickOffsetTop = 30;
     var brickOffsetLeft = 30;
     var bricks = [];
+    var score = 0;
+
     for (c = 0; c < brickColumnCount; c++) { // Column as x or horizontal
       bricks[c] = [];
       for (r = 0; r < brickRowCount; r++) { // Row as y or vertical
@@ -148,10 +150,21 @@
               dy = -dy;
               changeColor();
               b.status = 0;
+              score++;
+              if (score == brickRowCount * brickColumnCount) {
+                alert("YOU WIN, CONGRATULATIONS!");
+                document.location.reload();
+              }
             }
           }
         }
       }
+    }
+
+    function drawScore() {
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "#0095DD";
+      ctx.fillText("Score: " + score, 8, 20);
     }
 
     function draw() {
@@ -162,6 +175,7 @@
       drawBall(ballColor);
       drawPaddle();
       collisionDetection();
+      drawScore();
 
       if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) { // Left || Right
         // If position of center of ball and the next change in horizontal movement is smaller than the radius of the ball, that means the ball has hit the left side of the canvas. This also means that the ball must have been moving leftwards, ie. dx is -2. Therefore now set dx to be positive and move it rightwards.
