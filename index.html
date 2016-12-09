@@ -99,36 +99,45 @@
         increaseSpeed(dy);
         changeColor();
       }
-      if (y + dy < ballRadius || y + dy > canvas.height - ballRadius) { // Top || Bottom
+
+      if (y + dy < ballRadius) { // Top
         // Likewise, if the position of the center of the ball and the change in vertical movement is greater than the height of canvas minus the ball radisu, it means that the ball has hit the bottom wall of the canvas, meaning it is moving downwards, ie. dy is positive. Therefore, now set dy to be negative and move it upwards.
         dy = -dy;
         increaseSpeed(dy);
         changeColor();
+      } else if (y + dy > canvas.height - ballRadius) { // Bottom
+        if (x > paddleX && x < paddleX + paddleWidth) {
+          // checks that the x-position of ball is within the length of the paddle, but it still hits the wall, not the paddle
+          dy = -dy;
+        } else {
+          alert("GAME OVER");
+          document.location.reload();
+        }
       }
 
       x += dx;
       y += dy;
 
       if (rightPressed && paddleX < canvas.width - paddleWidth) {
-        paddleX += 7;
+        paddleX += 5; // random(5, 10)
       } else if (leftPressed && paddleX > 0) {
-        paddleX -= 7;
+        paddleX -= 5;
       }
     }
 
     function keyDownHandler(e) {
-      if (e.keyCode === 39) {
-        rightPressed = true;
-      } else if (e.keyCode === 37) {
+      if (e.keyCode === 37) {
         leftPressed = true;
+      } else if (e.keyCode === 39) {
+        rightPressed = true;
       }
     }
 
     function keyUpHandler(e) {
-      if (e.keyCode === 39) {
-        rightPressed = false;
-      } else if (e.keyCode === 37) {
+      if (e.keyCode === 37) {
         leftPressed = false;
+      } else if (e.keyCode === 39) {
+        rightPressed = false;
       }
     }
 
