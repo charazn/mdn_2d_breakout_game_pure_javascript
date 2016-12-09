@@ -34,8 +34,8 @@
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     // Start ball at random locations on canvas
-    var x = random(canvas.width/4, canvas.width*3/4);
-    var y = random(0, canvas.height/2);
+    var x = random(canvas.width / 4, canvas.width * 3 / 4);
+    var y = random(0, canvas.height / 2);
     // Set random initial direction
     // See http://stackoverflow.com/questions/8611830/javascript-random-positive-or-negative-number
     var dx = Math.round(Math.random()) * 2 - 1;
@@ -48,6 +48,24 @@
     var leftPressed = false;
     var ballColor = "0095DD";
     var para = document.querySelector("p");
+
+    var brickRowCount = 3;
+    var brickColumnCount = 5;
+    var brickWidth = 75;
+    var brickHeight = 20;
+    var brickPadding = 10;
+    var brickOffsetTop = 30;
+    var brickOffsetLeft = 30;
+    var bricks = [];
+    for (c = 0; c < brickColumnCount; c++) { // Column as x or horizontal
+      bricks[c] = [];
+      for (r = 0; r < brickRowCount; r++) { // Row as y or vertical
+        bricks[c][r] = {
+          x: 0,
+          y: 0
+        };
+      }
+    }
 
     // To get a random floating point number within a certain range, first define the range by 'min' and 'max':
     // min + (Math.random() * (max - min))
@@ -77,6 +95,22 @@
       ctx.closePath();
     }
 
+    function drawBricks() {
+      for (c = 0; c < brickColumnCount; c++) { // Drawing columns first
+        for (r = 0; r < brickRowCount; r++) { // Then the rows
+          var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+          var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+          bricks[c][r].x = brickX;
+          bricks[c][r].y = brickY;
+          ctx.beginPath();
+          ctx.rect(brickX, brickY, brickWidth, brickHeight);
+          ctx.fillStyle = "#0095DD";
+          ctx.fill();
+          ctx.closePath();
+        }
+      }
+    }
+
     function increaseSpeed() {
       if (dx < 0) {
         dx -= 0.1; // increase horizontal speed left
@@ -90,6 +124,7 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // See https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
       // The CanvasRenderingContext2D.clearRect() method of the Canvas 2D API sets all pixels in the rectangle defined by starting point (x, y) and size (width, height) to transparent black, erasing any previously drawn content.
+      drawBricks();
       drawBall(ballColor);
       drawPaddle();
 
