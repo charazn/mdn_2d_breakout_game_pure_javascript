@@ -58,6 +58,7 @@
     var brickOffsetLeft = 30;
     var bricks = [];
     var score = 0;
+    var lives = 3;
 
     for (c = 0; c < brickColumnCount; c++) { // Column as x or horizontal
       bricks[c] = [];
@@ -76,6 +77,18 @@
     function random(min, max) {
       var num = Math.floor(Math.random() * (max - min)) + min;
       return num;
+    }
+
+    function drawScore() {
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "#0095DD";
+      ctx.fillText("Score: " + score, 8, 20);
+    }
+
+    function drawLives() {
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "#0095DD";
+      ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
     }
 
     function drawBall(color) {
@@ -169,12 +182,6 @@
       }
     }
 
-    function drawScore() {
-      ctx.font = "16px Arial";
-      ctx.fillStyle = "#0095DD";
-      ctx.fillText("Score: " + score, 8, 20);
-    }
-
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // See https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
@@ -184,6 +191,7 @@
       drawPaddle();
       collisionDetection();
       drawScore();
+      drawLives();
 
       if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) { // Left || Right
         // If position of center of ball and the next change in horizontal movement is smaller than the radius of the ball, that means the ball has hit the left side of the canvas. This also means that the ball must have been moving leftwards, ie. dx is -2. Therefore now set dx to be positive and move it rightwards.
@@ -203,8 +211,17 @@
           para.innerHTML = "Horizontal speed dx is: " + dx + "<br>Vertical speed dy is now: " + dy;
           // Note para.textContent does not recognise escape characters \n and html tags <br>
         } else {
-          alert("GAME OVER");
-          document.location.reload();
+          lives--;
+          if (!lives) {
+            alert("GAME OVER");
+            document.location.reload();
+          } else {
+            var x = random(canvas.width / 4, canvas.width * 3 / 4);
+            var y = random(0, canvas.height / 2);
+            var dx = Math.round(Math.random()) * 2 - 1;
+            var dy = Math.round(Math.random()) * 2 - 1;
+            paddleX = (canvas.width - paddleWidth) / 2;
+          }
         }
       }
 
