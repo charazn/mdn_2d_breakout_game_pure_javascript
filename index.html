@@ -62,7 +62,8 @@
       for (r = 0; r < brickRowCount; r++) { // Row as y or vertical
         bricks[c][r] = {
           x: 0,
-          y: 0
+          y: 0,
+          status: 1
         };
       }
     }
@@ -98,15 +99,17 @@
     function drawBricks() {
       for (c = 0; c < brickColumnCount; c++) { // Drawing columns first
         for (r = 0; r < brickRowCount; r++) { // Then the rows
-          var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
-          var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
-          bricks[c][r].x = brickX;
-          bricks[c][r].y = brickY;
-          ctx.beginPath();
-          ctx.rect(brickX, brickY, brickWidth, brickHeight);
-          ctx.fillStyle = "#0095DD";
-          ctx.fill();
-          ctx.closePath();
+          if (bricks[c][r].status === 1) {
+            var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+            var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+            bricks[c][r].x = brickX;
+            bricks[c][r].y = brickY;
+            ctx.beginPath();
+            ctx.rect(brickX, brickY, brickWidth, brickHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+          }
         }
       }
     }
@@ -120,6 +123,37 @@
       dy -= 0.1; // increase the vertical speed up
     }
 
+    function keyDownHandler(e) {
+      if (e.keyCode === 37) {
+        leftPressed = true;
+      } else if (e.keyCode === 39) {
+        rightPressed = true;
+      }
+    }
+
+    function keyUpHandler(e) {
+      if (e.keyCode === 37) {
+        leftPressed = false;
+      } else if (e.keyCode === 39) {
+        rightPressed = false;
+      }
+    }
+
+    function collisionDetection() {
+      for (c = 0; c < brickColumnCount; c++) {
+        for (r = 0; r < brickRowCount; r++) {
+          var b = bricks[c][r];
+          if (b.status == 1) {
+            if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+              dy = -dy;
+              changeColor();
+              b.status = 0;
+            }
+          }
+        }
+      }
+    }
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // See https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
@@ -127,6 +161,7 @@
       drawBricks();
       drawBall(ballColor);
       drawPaddle();
+      collisionDetection();
 
       if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) { // Left || Right
         // If position of center of ball and the next change in horizontal movement is smaller than the radius of the ball, that means the ball has hit the left side of the canvas. This also means that the ball must have been moving leftwards, ie. dx is -2. Therefore now set dx to be positive and move it rightwards.
@@ -161,21 +196,11 @@
       }
     }
 
-    function keyDownHandler(e) {
-      if (e.keyCode === 37) {
-        leftPressed = true;
-      } else if (e.keyCode === 39) {
-        rightPressed = true;
-      }
-    }
-
-    function keyUpHandler(e) {
-      if (e.keyCode === 37) {
-        leftPressed = false;
-      } else if (e.keyCode === 39) {
-        rightPressed = false;
-      }
-    }
+    // For the center of the ball to be inside the brick, all four of the following statements need to be true:
+    // The x position of the ball is greater than the x position of the brick.
+    // The x position of the ball is less than the x position of the brick plus its width.
+    // The y position of the ball is greater than the y position of the brick.
+    // The y position of the ball is less than the y position of the brick plus its height.
 
     document.addEventListener("keydown", keyDownHandler, false); // target.addEventListener(type, listener[, useCapture]);
     document.addEventListener("keyup", keyUpHandler, false);
