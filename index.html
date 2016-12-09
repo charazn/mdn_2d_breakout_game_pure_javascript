@@ -141,6 +141,14 @@
       }
     }
 
+    function mouseMoveHandler(e) {
+      var relativeX = e.clientX - canvas.offsetLeft;
+      if (relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth / 2;
+        // setting the left corner position of the paddle, with the mouse x position at relativeX, ie. middle of the paddle
+      }
+    }
+
     function collisionDetection() {
       for (c = 0; c < brickColumnCount; c++) {
         for (r = 0; r < brickRowCount; r++) {
@@ -218,6 +226,7 @@
 
     document.addEventListener("keydown", keyDownHandler, false); // target.addEventListener(type, listener[, useCapture]);
     document.addEventListener("keyup", keyUpHandler, false);
+    document.addEventListener("mousemove", mouseMoveHandler, false);
     // See https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
     // useCapture Optional
     // A Boolean that indicates that events of this type will be dispatched to the registered listener before being dispatched to any EventTarget beneath it in the DOM tree. Events that are bubbling upward through the tree will not trigger a listener designated to use capture. Event bubbling and capturing are two ways of propagating events that occur in an element that is nested within another element, when both elements have registered a handle for that event. The event propagation mode determines the order in which elements receive the event. See DOM Level 3 Events and JavaScript Event order for a detailed explanation. If not specified, useCapture defaults to false.
