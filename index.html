@@ -25,8 +25,10 @@
   <script>
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
-    var x = canvas.width / 2;
-    var y = canvas.height - 30;
+    var x = Math.floor(Math.random() * canvas.width);
+    var y = Math.floor(Math.random() * canvas.height);
+    console.log(x);
+    console.log(y);
     var dx = 1;
     var dy = -1;
     var ballRadius = 10;
@@ -53,7 +55,6 @@
     }
 
     function increaseSpeed(delta) {
-      console.log(delta);
       if (delta >= 1 && delta < 5) {
         if (delta === dx) {
           if (delta < 0) {
