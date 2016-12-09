@@ -33,6 +33,8 @@
     var paddleHeight = 10;
     var paddleWidth = 75;
     var paddleX = (canvas.width - paddleWidth) / 2;
+    var rightPressed = false;
+    var leftPressed = false;
 
     function drawBall() {
       ctx.beginPath();
@@ -43,11 +45,11 @@
     }
 
     function drawPaddle() {
-        ctx.beginPath();
-        ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-        ctx.fillStyle = "#0095DD";
-        ctx.fill();
-        ctx.closePath();
+      ctx.beginPath();
+      ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+      ctx.fillStyle = "#0095DD";
+      ctx.fill();
+      ctx.closePath();
     }
 
     function draw() {
@@ -68,6 +70,31 @@
       x += dx;
       y += dy;
     }
+
+    document.addEventListener("keydown", keyDownHandler, false); // target.addEventListener(type, listener[, useCapture]);
+    document.addEventListener("keyup", keyUpHandler, false);
+    // See https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+    // useCapture Optional
+    // A Boolean that indicates that events of this type will be dispatched to the registered listener before being dispatched to any EventTarget beneath it in the DOM tree. Events that are bubbling upward through the tree will not trigger a listener designated to use capture. Event bubbling and capturing are two ways of propagating events that occur in an element that is nested within another element, when both elements have registered a handle for that event. The event propagation mode determines the order in which elements receive the event. See DOM Level 3 Events and JavaScript Event order for a detailed explanation. If not specified, useCapture defaults to false.
+    // Note: For event listeners attached to the event target; the event is in the target phase, rather than capturing and bubbling phases. Events in the target phase will trigger all listeners on an element regardless of the useCapture parameter.
+    // Note: useCapture became optional only in more recent versions of the major browsers; for example, it was not optional before Firefox 6. You should provide this parameter for broadest compatibility.
+
+    function keyDownHandler(e) {
+      if (e.keyCode === 39) {
+        rightPressed = true;
+      } else if (e.keyCode === 37) {
+        leftPressed = true;
+      }
+    }
+
+    function keyUpHandler(e) {
+      if (e.keyCode === 39) {
+        rightPressed = false;
+      } else if (e.keyCode === 37) {
+        leftPressed = false;
+      }
+    }
+
     setInterval(draw, 10);
     // Or use window.requestAnimationFrame(); The window.requestAnimationFrame() method tells the browser that you wish to perform an animation and requests that the browser call a specified function to update an animation before the next repaint. The method takes as an argument a callback to be invoked before the repaint.
   </script>
