@@ -15,12 +15,20 @@
       display: block;
       margin: 0 auto;
     }
+
+    p {
+      position: absolute;
+      top: 340px;
+      left: 480px;
+    }
   </style>
 </head>
 
 <body>
 
   <canvas id="myCanvas" width="480" height="320"></canvas>
+  <p></p>
+
 
   <script>
     var canvas = document.getElementById("myCanvas");
@@ -39,6 +47,7 @@
     var rightPressed = false;
     var leftPressed = false;
     var ballColor = "0095DD";
+    var para = document.querySelector("p");
 
     // To get a random floating point number within a certain range, first define the range by 'min' and 'max':
     // min + (Math.random() * (max - min))
@@ -68,22 +77,13 @@
       ctx.closePath();
     }
 
-    function increaseSpeed(delta) {
-      if (delta >= 1 && delta < 5) {
-        if (delta === dx) {
-          if (delta < 0) {
-            dx -= 0.1;
-          } else {
-            dx += 0.1;
-          }
-        } else {
-          if (dy < 0) {
-            dy -= 0.1;
-          } else {
-            dy += 0.1;
-          }
-        }
+    function increaseSpeed() {
+      if (dx < 0) {
+        dx -= 0.1; // increase horizontal speed left
+      } else {
+        dx += 0.1; // increase horizontal speed right
       }
+      dy -= 0.1; // increase the vertical speed up
     }
 
     function draw() {
@@ -96,19 +96,19 @@
       if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) { // Left || Right
         // If position of center of ball and the next change in horizontal movement is smaller than the radius of the ball, that means the ball has hit the left side of the canvas. This also means that the ball must have been moving leftwards, ie. dx is -2. Therefore now set dx to be positive and move it rightwards.
         dx = -dx;
-        increaseSpeed(dy);
         changeColor();
       }
 
       if (y + dy < ballRadius) { // Top
         // Likewise, if the position of the center of the ball and the change in vertical movement is greater than the height of canvas minus the ball radisu, it means that the ball has hit the bottom wall of the canvas, meaning it is moving downwards, ie. dy is positive. Therefore, now set dy to be negative and move it upwards.
         dy = -dy;
-        increaseSpeed(dy);
         changeColor();
       } else if (y + dy > canvas.height - ballRadius) { // Bottom
         if (x > paddleX && x < paddleX + paddleWidth) {
           // checks that the x-position of ball is within the length of the paddle, but it still hits the wall, not the paddle
           dy = -dy;
+          increaseSpeed();
+          para.innerHTML = "Horizontal speed dx is: " + dx + "<br>Vertical speed dy is now: " + dy;
         } else {
           alert("GAME OVER");
           document.location.reload();
