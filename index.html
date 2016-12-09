@@ -57,6 +57,7 @@
       // See https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
       // The CanvasRenderingContext2D.clearRect() method of the Canvas 2D API sets all pixels in the rectangle defined by starting point (x, y) and size (width, height) to transparent black, erasing any previously drawn content.
       drawBall();
+      drawPaddle();
 
       if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) { // Left || Right
         // If position of center of ball and the next change in horizontal movement is smaller than the radius of the ball, that means the ball has hit the left side of the canvas. This also means that the ball must have been moving leftwards, ie. dx is -2. Therefore now set dx to be positive and move it rightwards.
@@ -69,6 +70,12 @@
 
       x += dx;
       y += dy;
+
+      if (rightPressed && paddleX < canvas.width - paddleWidth) {
+        paddleX += 7;
+      } else if (leftPressed && paddleX > 0) {
+        paddleX -= 7;
+      }
     }
 
     document.addEventListener("keydown", keyDownHandler, false); // target.addEventListener(type, listener[, useCapture]);
@@ -86,7 +93,6 @@
         leftPressed = true;
       }
     }
-
     function keyUpHandler(e) {
       if (e.keyCode === 39) {
         rightPressed = false;
