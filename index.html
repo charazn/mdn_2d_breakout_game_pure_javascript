@@ -25,15 +25,15 @@
   <script>
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
-    var x = canvas.width/2;
-    var y = canvas.height-30;
+    var x = canvas.width / 2;
+    var y = canvas.height - 30;
     var dx = 2;
     var dy = -2;
     var ballRadius = 10;
 
     function drawBall() {
       ctx.beginPath();
-      ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+      ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
       ctx.fillStyle = "#0095DD";
       ctx.fill();
       ctx.closePath();
@@ -44,12 +44,21 @@
       // See https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
       // The CanvasRenderingContext2D.clearRect() method of the Canvas 2D API sets all pixels in the rectangle defined by starting point (x, y) and size (width, height) to transparent black, erasing any previously drawn content.
       drawBall();
+
+      if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) { // Left || Right
+        // If position of center of ball and the next change in horizontal movement is smaller than the radius of the ball, that means the ball has hit the left side of the canvas. This also means that the ball must have been moving leftwards, ie. dx is -2. Therefore now set dx to be positive and move it rightwards.
+        dx = -dx;
+      }
+      if (y + dy < ballRadius || y + dy > canvas.height - ballRadius) { // Top || Bottom
+        // Likewise, if the position of the center of the ball and the change in vertical movement is greater than the height of canvas minus the ball radisu, it means that the ball has hit the bottom wall of the canvas, meaning it is moving downwards, ie. dy is positive. Therefore, now set dy to be negative and move it upwards.
+        dy = -dy;
+      }
+
       x += dx;
       y += dy;
     }
     setInterval(draw, 10);
     // Or use window.requestAnimationFrame(); The window.requestAnimationFrame() method tells the browser that you wish to perform an animation and requests that the browser call a specified function to update an animation before the next repaint. The method takes as an argument a callback to be invoked before the repaint.
-
   </script>
 
 </body>
