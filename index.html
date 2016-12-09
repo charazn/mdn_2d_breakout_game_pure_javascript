@@ -26,11 +26,8 @@
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     // Start ball at random locations on canvas
-    // To get a random floating point number within a certain range, first define the range by 'min' and 'max':
-    // min + (Math.random() * (max - min))
-    // See https://answers.yahoo.com/question/index?qid=20101101170531AA5KTeQ
-    var x = Math.floor(Math.random() * canvas.width);
-    var y = Math.floor(Math.random() * canvas.height);
+    var x = random(0, canvas.width);
+    var y = random(0, canvas.height);
     // Set random initial direction
     // See http://stackoverflow.com/questions/8611830/javascript-random-positive-or-negative-number
     var dx = Math.round(Math.random()) * 2 - 1;
@@ -41,13 +38,26 @@
     var paddleX = (canvas.width - paddleWidth) / 2;
     var rightPressed = false;
     var leftPressed = false;
+    var ballColor = "0095DD";
 
-    function drawBall() {
+    // To get a random floating point number within a certain range, first define the range by 'min' and 'max':
+    // min + (Math.random() * (max - min))
+    // See https://answers.yahoo.com/question/index?qid=20101101170531AA5KTeQ
+    function random(min, max) {
+      var num = Math.floor(Math.random() * (max - min)) + min;
+      return num;
+    }
+
+    function drawBall(color) {
       ctx.beginPath();
       ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "#0095DD";
+      ctx.fillStyle = color; // "#0095DD"
       ctx.fill();
       ctx.closePath();
+    }
+
+    function changeColor() {
+      ballColor = 'rgb(' + random(0, 255) + ',' + random(0, 255) + ',' + random(0, 255) + ')';
     }
 
     function drawPaddle() {
@@ -80,18 +90,20 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // See https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
       // The CanvasRenderingContext2D.clearRect() method of the Canvas 2D API sets all pixels in the rectangle defined by starting point (x, y) and size (width, height) to transparent black, erasing any previously drawn content.
-      drawBall();
+      drawBall(ballColor);
       drawPaddle();
 
       if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) { // Left || Right
         // If position of center of ball and the next change in horizontal movement is smaller than the radius of the ball, that means the ball has hit the left side of the canvas. This also means that the ball must have been moving leftwards, ie. dx is -2. Therefore now set dx to be positive and move it rightwards.
         dx = -dx;
         increaseSpeed(dy);
+        changeColor();
       }
       if (y + dy < ballRadius || y + dy > canvas.height - ballRadius) { // Top || Bottom
         // Likewise, if the position of the center of the ball and the change in vertical movement is greater than the height of canvas minus the ball radisu, it means that the ball has hit the bottom wall of the canvas, meaning it is moving downwards, ie. dy is positive. Therefore, now set dy to be negative and move it upwards.
         dy = -dy;
         increaseSpeed(dy);
+        changeColor();
       }
 
       x += dx;
@@ -103,14 +115,6 @@
         paddleX -= 7;
       }
     }
-
-    document.addEventListener("keydown", keyDownHandler, false); // target.addEventListener(type, listener[, useCapture]);
-    document.addEventListener("keyup", keyUpHandler, false);
-    // See https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
-    // useCapture Optional
-    // A Boolean that indicates that events of this type will be dispatched to the registered listener before being dispatched to any EventTarget beneath it in the DOM tree. Events that are bubbling upward through the tree will not trigger a listener designated to use capture. Event bubbling and capturing are two ways of propagating events that occur in an element that is nested within another element, when both elements have registered a handle for that event. The event propagation mode determines the order in which elements receive the event. See DOM Level 3 Events and JavaScript Event order for a detailed explanation. If not specified, useCapture defaults to false.
-    // Note: For event listeners attached to the event target; the event is in the target phase, rather than capturing and bubbling phases. Events in the target phase will trigger all listeners on an element regardless of the useCapture parameter.
-    // Note: useCapture became optional only in more recent versions of the major browsers; for example, it was not optional before Firefox 6. You should provide this parameter for broadest compatibility.
 
     function keyDownHandler(e) {
       if (e.keyCode === 39) {
@@ -127,6 +131,14 @@
         leftPressed = false;
       }
     }
+
+    document.addEventListener("keydown", keyDownHandler, false); // target.addEventListener(type, listener[, useCapture]);
+    document.addEventListener("keyup", keyUpHandler, false);
+    // See https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+    // useCapture Optional
+    // A Boolean that indicates that events of this type will be dispatched to the registered listener before being dispatched to any EventTarget beneath it in the DOM tree. Events that are bubbling upward through the tree will not trigger a listener designated to use capture. Event bubbling and capturing are two ways of propagating events that occur in an element that is nested within another element, when both elements have registered a handle for that event. The event propagation mode determines the order in which elements receive the event. See DOM Level 3 Events and JavaScript Event order for a detailed explanation. If not specified, useCapture defaults to false.
+    // Note: For event listeners attached to the event target; the event is in the target phase, rather than capturing and bubbling phases. Events in the target phase will trigger all listeners on an element regardless of the useCapture parameter.
+    // Note: useCapture became optional only in more recent versions of the major browsers; for example, it was not optional before Firefox 6. You should provide this parameter for broadest compatibility.
 
     setInterval(draw, 10);
     // Or use window.requestAnimationFrame(); The window.requestAnimationFrame() method tells the browser that you wish to perform an animation and requests that the browser call a specified function to update an animation before the next repaint. The method takes as an argument a callback to be invoked before the repaint.
