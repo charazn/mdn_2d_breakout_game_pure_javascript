@@ -25,13 +25,27 @@
   <script>
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
+    var x = canvas.width/2;
+    var y = canvas.height-30;
+    var dx = 2;
+    var dy = -2;
+    var ballRadius = 10;
 
-    function draw() {
+    function drawBall() {
       ctx.beginPath();
-      ctx.arc(50, 50, 10, 0, Math.PI*2);
+      ctx.arc(x, y, ballRadius, 0, Math.PI*2);
       ctx.fillStyle = "#0095DD";
       ctx.fill();
       ctx.closePath();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // See https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
+      // The CanvasRenderingContext2D.clearRect() method of the Canvas 2D API sets all pixels in the rectangle defined by starting point (x, y) and size (width, height) to transparent black, erasing any previously drawn content.
+      drawBall();
+      x += dx;
+      y += dy;
     }
     setInterval(draw, 10);
     // Or use window.requestAnimationFrame(); The window.requestAnimationFrame() method tells the browser that you wish to perform an animation and requests that the browser call a specified function to update an animation before the next repaint. The method takes as an argument a callback to be invoked before the repaint.
