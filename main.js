@@ -200,8 +200,9 @@ function draw() {
     } else {
       x = random(canvas.width / 4, canvas.width * 3 / 4);
       y = random(canvas.height / 2, canvas.height * 3 / 4);
-      dx = (Math.round(Math.random()) * 2 - 1) * 2;
-      dy = (Math.round(Math.random()) * 2 - 1) * 2;
+      // dx = (Math.round(Math.random()) * 2 - 1) * 2;
+      // dy = (Math.round(Math.random()) * 2 - 1) * 2;
+      // ie. dx and dy will remain at same speed
       paddleX = (canvas.width - paddleWidth) / 2;
     }
   }
