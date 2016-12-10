@@ -100,12 +100,16 @@ function drawBricks() {
 }
 
 function increaseSpeed() {
-  if (dx < 0) {
-    dx -= 0.1; // increase horizontal speed left
-  } else {
-    dx += 0.1; // increase horizontal speed right
+  if (Math.abs(dx) < 5) {
+    if (dx < 0) {
+      dx -= 2; // increase horizontal speed left
+    } else if (dx > 0) {
+      dx += 2; // increase horizontal speed right
+    }
   }
-  dy -= 0.1; // increase the vertical speed up
+  if (Math.abs(dy) < 5) {
+    dy -= 0.1; // increase the vertical speed up
+  }
 }
 
 function keyDownHandler(e) {
