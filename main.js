@@ -137,7 +137,10 @@ function collisionDetection() {
     for (r = 0; r < brickRowCount; r++) {
       var b = bricks[c][r];
       if (b.status == 1) {
-        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+        if (x + ballRadius > b.x && x - ballRadius < b.x + brickWidth && y + ballRadius > b.y && y - ballRadius < b.y + brickHeight) {
+          // CHANGE FROM if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+          // ie. making the edge of the ball hit the bricks and not the center of the ball
+          // May have to change the brickPadding to more than 20 to accommodate the whole ball inbetween bricks (diameter)
           dy = -dy;
           changeColor();
           b.status = 0;
