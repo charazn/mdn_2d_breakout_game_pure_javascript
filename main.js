@@ -163,24 +163,31 @@ function draw() {
   drawScore();
   drawLives();
 
-  if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) { // Left || Right
+  if (x - ballRadius < 0 || x + ballRadius > canvas.width) { // Left || Right
+    // CHANGE FROM if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) { // Left || Right
+    // At each redraw of frame, x of the ball is already determined, with an increase in distance dx for the next frame, at the bottom of this function in the previous frame, before it is drawn again with drawBall() just above. Therefore x in this frame is equal to x + dx in the last frame. x is the position of the ball at this moment in time when the code enters this if/else loop. There is no need to add the dx in the if else loop at all.
     // If position of center of ball and the next change in horizontal movement is smaller than the radius of the ball, that means the ball has hit the left side of the canvas. This also means that the ball must have been moving leftwards, ie. dx is -2. Therefore now set dx to be positive and move it rightwards.
     dx = -dx;
     changeColor();
   }
 
-  if (y + dy < ballRadius) { // Top
+  if (y < ballRadius) { // Top
+    // CHANGE FROM if (y + dy < ballRadius) { // Top
+    // As explained above for x, there is no need to add dy to the current y
     // Likewise, if the position of the center of the ball and the change in vertical movement is greater than the height of canvas minus the ball radisu, it means that the ball has hit the bottom wall of the canvas, meaning it is moving downwards, ie. dy is positive. Therefore, now set dy to be negative and move it upwards.
     dy = -dy;
     changeColor();
-  } else if ((y + dy > canvas.height - paddleHeight - ballRadius) && x > paddleX && x < paddleX + paddleWidth) {
+  } else if (y + ballRadius > canvas.height - paddleHeight && x > paddleX && x < paddleX + paddleWidth) {
+    // CHANGE FROM } else if ((y + dy > canvas.height - paddleHeight - ballRadius) && x > paddleX && x < paddleX + paddleWidth) {
+    // Note: It cannot be x + ballRadius > paddleX or x - ballRadius > paddleX because the lowest point of the ball is also directly vertically below x. It must be the lowest point of the ball touching the paddle.
     // Checks that the x-position of ball is within the length of the paddle, but it still hits the wall, not the paddle.
     // Add check if ball is hitting top of paddle
     dy = -dy;
     increaseSpeed();
     para.innerHTML = "Horizontal speed dx is: " + dx + "<br>Vertical speed dy is now: " + dy;
     // Note para.textContent does not recognise escape characters \n and html tags <br>
-  } else if (y + dy > canvas.height - ballRadius) { // Bottom
+  } else if (y + ballRadius > canvas.height) { // Bottom
+    // CHANGE FROM } else if (y + dy > canvas.height - ballRadius) { // Bottom
     lives--;
     if (!lives) {
       alert("GAME OVER");
