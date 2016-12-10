@@ -161,12 +161,12 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // See https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
   // The CanvasRenderingContext2D.clearRect() method of the Canvas 2D API sets all pixels in the rectangle defined by starting point (x, y) and size (width, height) to transparent black, erasing any previously drawn content.
+  drawScore();
+  drawLives();
   drawBricks();
   drawBall(ballColor);
   drawPaddle();
   collisionDetection();
-  drawScore();
-  drawLives();
 
   if (x - ballRadius < 0 || x + ballRadius > canvas.width) { // Left || Right
     // CHANGE FROM if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) { // Left || Right
