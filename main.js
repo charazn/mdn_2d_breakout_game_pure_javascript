@@ -6,10 +6,8 @@ var y = random(canvas.height / 2, canvas.height * 3 / 4);
 // Set random initial direction
 // See http://stackoverflow.com/questions/8611830/javascript-random-positive-or-negative-number
 // To set it either 1 or -1
-// var dx = Math.round(Math.random()) * 2 - 1;
-// var dy = Math.round(Math.random()) * 2 - 1;
-var dx = Math.random() + 1;
-var dy = Math.random() + 1;
+var dx = (Math.round(Math.random()) * 2 - 1) * 2; // In this case, 2 or -2
+var dy = (Math.round(Math.random()) * 2 - 1) * 2;
 var ballRadius = 10;
 var paddleHeight = 10;
 var paddleWidth = 80;
@@ -102,13 +100,13 @@ function drawBricks() {
 function increaseSpeed() {
   if (Math.abs(dx) < 5) {
     if (dx < 0) {
-      dx -= 2; // increase horizontal speed left
+      dx -= 0.25; // increase horizontal speed left
     } else if (dx > 0) {
-      dx += 2; // increase horizontal speed right
+      dx += 0.25; // increase horizontal speed right
     }
   }
   if (Math.abs(dy) < 5) {
-    dy -= 0.1; // increase the vertical speed up
+    dy -= 0.25; // increase the vertical speed up
   }
 }
 
@@ -202,8 +200,8 @@ function draw() {
     } else {
       x = random(canvas.width / 4, canvas.width * 3 / 4);
       y = random(canvas.height / 2, canvas.height * 3 / 4);
-      dx = Math.random() + 1;
-      dy = Math.random() + 1;
+      dx = (Math.round(Math.random()) * 2 - 1) * 2;
+      dy = (Math.round(Math.random()) * 2 - 1) * 2;
       paddleX = (canvas.width - paddleWidth) / 2;
     }
   }
