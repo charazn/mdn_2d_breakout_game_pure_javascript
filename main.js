@@ -14,7 +14,7 @@ var paddleWidth = 80;
 var paddleX = (canvas.width - paddleWidth) / 2;
 var rightPressed = false;
 var leftPressed = false;
-var ballColor = "0095DD";
+var ballColor = "#DD0026";
 var para = document.querySelector("p");
 
 var brickRowCount = 3;
@@ -49,13 +49,13 @@ function random(min, max) {
 
 function drawScore() {
   ctx.font = "16px Arial";
-  ctx.fillStyle = "#0095DD";
+  ctx.fillStyle = "#004363";
   ctx.fillText("Score: " + score, 8, 20);
 }
 
 function drawLives() {
   ctx.font = "16px Arial";
-  ctx.fillStyle = "#0095DD";
+  ctx.fillStyle = "#004363";
   ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
 }
 
@@ -89,7 +89,7 @@ function drawBricks() {
         bricks[c][r].y = brickY;
         ctx.beginPath();
         ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "#DDB700";
         ctx.fill();
         ctx.closePath();
       }
