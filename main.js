@@ -189,7 +189,7 @@ function draw() {
     // Add check if ball is hitting top of paddle
     dy = -dy;
     increaseSpeed();
-    para.innerHTML = "Horizontal speed dx is: " + dx + "<br>Vertical speed dy is now: " + dy;
+    // para.innerHTML = "Horizontal speed dx is: " + dx + "<br>Vertical speed dy is now: " + dy;
     // Note para.textContent does not recognise escape characters \n and html tags <br>
   } else if (y + ballRadius > canvas.height) { // Bottom
     // CHANGE FROM } else if (y + dy > canvas.height - ballRadius) { // Bottom
