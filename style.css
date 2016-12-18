@@ -10,7 +10,6 @@ canvas {
 }
 
 p {
-  position: absolute;
-  top: 340px;
-  left: 480px;
+    margin: 10px;
+    text-align: center;
 }
